@@ -7,6 +7,13 @@ tareas = [
     {"id": 2, "titulo": "Dominar el Tooling", "completada": False}
 ]
 
+@app.errorhandler(400)
+def peticion_incorrecta(error):
+    return jsonify({
+        "error": "Petición incorrecta",
+        "mensaje": "El cuerpo de la solicitud no es un JSON válido o carece de los campos requeridos."
+    }), 400
+
 @app.errorhandler(404)
 def recurso_no_encontrado(error):
     return jsonify({
