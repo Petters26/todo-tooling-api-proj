@@ -58,17 +58,12 @@ def create_task():
 
 @app.route("/tasks/<int:task_id>", methods=["DELETE"])
 def delete_task(task_id):
-    return (
-        jsonify(
-            {
-                "message": (
-                    f"DELETE endpoint for ID {task_id} "
-                    "ready to be implemented by Dev 3"
-                )
-            }
-        ),
-        200,
-    )
+    """Delete the task with the given ID (200) or responds 404 if not found."""
+    task = next((t for t in tasks if t["id"] == task_id), None)
+    if task is None:
+        abort(404)
+    tasks.remove(task)
+    return jsonify({"message": f"Task {task_id} deleted"}), 200
 
 
 if __name__ == '__main__':
