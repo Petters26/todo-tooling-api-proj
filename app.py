@@ -1,45 +1,104 @@
-from flask import Flask, jsonify, request
+"""REST API for Tasks built with Flask.
+
+Exposes endpoints to list, create, and delete tasks, along with
+global error handlers (400/404/500) responding in JSON.
+"""
+
+from flask import Flask, jsonify, request, abort
+
 
 app = Flask(__name__)
 
-tareas = [
-    {"id": 1, "titulo": "Aprender Flask", "completada": False},
-    {"id": 2, "titulo": "Dominar el Tooling", "completada": False}
+
+tasks = [
+    {"id": 1, "title": "Learn Flask", "completed": False},
+    {"id": 2, "title": "Master Tooling", "completed": False},
 ]
 
+
 @app.errorhandler(400)
-def peticion_incorrecta(error):
-    return jsonify({
-        "error": "Petición incorrecta",
-        "mensaje": "El cuerpo de la solicitud no es un JSON válido o carece de los campos requeridos."
-    }), 400
+def bad_request(error):
+    """Respond 400 in JSON when the request is invalid."""
+    return (
+        jsonify(
+            {
+                "error": "Bad request",
+                "message": (
+                    "The request body is not a valid JSON or "
+                    "lacks the required fields."
+                ),
+            }
+        ),
+        400,
+    )
+
 
 @app.errorhandler(404)
-def recurso_no_encontrado(error):
-    return jsonify({
-        "error": "Recurso no encontrado",
-        "mensaje": "La ruta solicitada o el recurso no existe en este servidor."
-    }), 404
+def resource_not_found(error):
+    """Respond 404 in JSON when the resource or route does not exist."""
+    return (
+        jsonify(
+            {
+                "error": "Resource not found",
+                "message": (
+                    "The requested URL or resource was not found on "
+                    "this server."
+                ),
+            }
+        ),
+        404,
+    )
+
 
 @app.errorhandler(500)
-def error_interno_servidor(error):
-    return jsonify({
-        "error": "Error interno del servidor",
-        "mensaje": "Ha ocurrido un error inesperado en nuestro sistema. Por favor, inténtelo de nuevo más tarde."
-    }), 500
+def internal_server_error(error):
+    """Respond 500 in JSON upon an unexpected server error."""
+    return (
+        jsonify(
+            {
+                "error": "Internal server error",
+                "message": (
+                    "An unexpected error occurred in our system. "
+                    "Please try again later."
+                ),
+            }
+        ),
+        500,
+    )
 
 
-@app.route('/tareas', methods=['GET'])
-def obtener_tareas():
-    return jsonify(tareas), 200
+@app.route("/tasks", methods=["GET"])
+def get_tasks():
+    """Return the complete list of tasks with code 200."""
+    return jsonify(tasks), 200
 
-@app.route('/tareas', methods=['POST'])
-def crear_tarea():
-    return jsonify({"mensaje": "Endpoint POST listo para ser implementado por Dev 3"}), 200
 
-@app.route('/tareas/<int:id_tarea>', methods=['DELETE'])
-def eliminar_tarea(id_tarea):
-    return jsonify({"mensaje": f"Endpoint DELETE para ID {id_tarea} listo para ser implementado por Dev 3"}), 200
+@app.route("/tasks", methods=["POST"])
+def create_task():
+    """Create a task from received JSON and return it with 201.
+    If the 'title' field is missing or JSON is invalid, responds with 400.
+    """
+    data = request.get_json(silent=True)
+    if not data or not data.get("title"):
+        abort(400)
+    new_id = max((task["id"] for task in tasks), default=0) + 1
+    new_task = {
+        "id": new_id,
+        "title": data["title"],
+        "completed": False,
+    }
+    tasks.append(new_task)
+    return jsonify(new_task), 201
+
+
+@app.route("/tasks/<int:task_id>", methods=["DELETE"])
+def delete_task(task_id):
+    """Delete the task with the given ID (200) or responds 404 if not found."""
+    task = next((t for t in tasks if t["id"] == task_id), None)
+    if task is None:
+        abort(404)
+    tasks.remove(task)
+    return jsonify({"message": f"Task {task_id} deleted"}), 200
 
 
 if __name__ == '__main__':
