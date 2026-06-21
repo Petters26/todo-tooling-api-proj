@@ -1,3 +1,9 @@
+"""REST API for Tasks built with Flask.
+
+Exposes endpoints to list, create, and delete tasks, along with
+global error handlers (400/404/500) responding in JSON.
+"""
+
 from flask import Flask, jsonify, request, abort
 
 
@@ -11,25 +17,54 @@ tasks = [
 
 
 @app.errorhandler(400)
-def peticion_incorrecta(error):
-    return jsonify({
-        "error": "Petición incorrecta",
-        "mensaje": "El cuerpo de la solicitud no es un JSON válido o carece de los campos requeridos."
-    }), 400
+def bad_request(error):
+    """Respond 400 in JSON when the request is invalid."""
+    return (
+        jsonify(
+            {
+                "error": "Bad request",
+                "message": (
+                    "The request body is not a valid JSON or "
+                    "lacks the required fields."
+                ),
+            }
+        ),
+        400,
+    )
+
 
 @app.errorhandler(404)
-def recurso_no_encontrado(error):
-    return jsonify({
-        "error": "Recurso no encontrado",
-        "mensaje": "La ruta solicitada o el recurso no existe en este servidor."
-    }), 404
+def resource_not_found(error):
+    """Respond 404 in JSON when the resource or route does not exist."""
+    return (
+        jsonify(
+            {
+                "error": "Resource not found",
+                "message": (
+                    "The requested URL or resource was not found on "
+                    "this server."
+                ),
+            }
+        ),
+        404,
+    )
+
 
 @app.errorhandler(500)
-def error_interno_servidor(error):
-    return jsonify({
-        "error": "Error interno del servidor",
-        "mensaje": "Ha ocurrido un error inesperado en nuestro sistema. Por favor, inténtelo de nuevo más tarde."
-    }), 500
+def internal_server_error(error):
+    """Respond 500 in JSON upon an unexpected server error."""
+    return (
+        jsonify(
+            {
+                "error": "Internal server error",
+                "message": (
+                    "An unexpected error occurred in our system. "
+                    "Please try again later."
+                ),
+            }
+        ),
+        500,
+    )
 
 
 @app.route("/tasks", methods=["GET"])
