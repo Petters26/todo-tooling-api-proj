@@ -1,29 +1,29 @@
-# API de Tareas - Proyecto Tooling
+# Tasks API - Tooling Project
 
-Microservicio REST de gestión de tareas (To-Do list) construido con **Flask**.
-El foco del proyecto es el dominio del *tooling* profesional de Python:
-entornos virtuales, gestión de paquetes, linters, formatters y control de
-versiones con Git.
+REST microservice for task management (To-Do list) built with **Flask**.
+The focus of the project is mastering professional Python *tooling*:
+virtual environments, package management, linters, formatters, and version
+control with Git.
 
-## Integrantes del equipo
+## Team members
 
-- Nombre 1
-- Nombre 2
-- Nombre 3
+- Name 1
+- Name 2
+- Name 3
 
-> ⚠️ Reemplaza los nombres anteriores por los integrantes reales del equipo.
+> ⚠️ Replace the names above with the actual team members.
 
-## Instalación y ejecución
+## Installation and running
 
 ```bash
-# Clonar repositorio
-git clone <url-del-repo>
-cd <nombre-del-repo>
+# Clone repository
+git clone <repo-url>
+cd <repo-name>
 
-# Crear entorno virtual
+# Create virtual environment
 python -m venv .venv
 
-# Activar entorno
+# Activate environment
 # Windows (PowerShell / CMD):
 .venv\Scripts\activate
 # Windows (Git Bash):
@@ -31,64 +31,64 @@ source .venv/Scripts/activate
 # Mac/Linux:
 source .venv/bin/activate
 
-# Instalar dependencias
+# Install dependencies
 pip install -r requirements.txt
 
-# Ejecutar servidor (puerto 5000)
+# Run server (port 5000)
 python app.py
 ```
 
-El servidor queda escuchando en **http://127.0.0.1:5000**.
+The server listens on **http://127.0.0.1:5000**.
 
-## Comandos de tooling
+## Tooling commands
 
 ```bash
-# Linter de estilo (PEP8) — no debe mostrar advertencias
+# Style linter (PEP8) — must not show warnings
 flake8 app.py
 
-# Formatter — formatea el código
+# Formatter — formats the code
 black app.py
-# Verificar formato sin modificar (se usa en la defensa)
+# Check formatting without modifying (used during the defense)
 black --check app.py
 
-# Linter de calidad — debe dar una puntuación >= 8.0/10
+# Quality linter — must score >= 8.0/10
 pylint app.py
 ```
 
-> La configuración de Flake8 vive en `setup.cfg` (longitud de línea alineada
-> con Black en 88 columnas) y la de Pylint en `.pylintrc` (reglas
-> personalizadas del equipo).
+> The Flake8 configuration lives in `setup.cfg` (line length aligned with
+> Black at 88 columns) and the Pylint one in `.pylintrc` (custom team
+> rules).
 
-## Pruebas (bono)
+## Tests (bonus)
 
 ```bash
-# Ejecutar la suite de pruebas desde la raíz del proyecto
+# Run the test suite from the project root
 pytest -v
 ```
 
 ## Endpoints
 
-| Método | Ruta             | Descripción            | Respuesta exitosa |
-|--------|------------------|------------------------|-------------------|
-| GET    | `/tasks`         | Listar todas las tareas| `200` + lista JSON |
-| POST   | `/tasks`         | Crear una nueva tarea  | `201` + tarea creada |
-| DELETE | `/tasks/<id>`    | Eliminar una tarea     | `200` (o `404` si no existe) |
+| Method | Path             | Description            | Successful response |
+|--------|------------------|------------------------|---------------------|
+| GET    | `/tasks`         | List all tasks         | `200` + JSON list |
+| POST   | `/tasks`         | Create a new task      | `201` + created task |
+| DELETE | `/tasks/<id>`    | Delete a task          | `200` (or `404` if not found) |
 
-### Ejemplos de uso
+### Usage examples
 
 ```bash
-# Listar tareas
+# List tasks
 curl http://127.0.0.1:5000/tasks
 
-# Crear una tarea (JSON válido)
+# Create a task (valid JSON)
 curl -X POST http://127.0.0.1:5000/tasks \
      -H "Content-Type: application/json" \
      -d '{"title": "Learn Flask"}'
 
-# Crear sin title -> 400
+# Create without title -> 400
 curl -X POST http://127.0.0.1:5000/tasks \
      -H "Content-Type: application/json" -d '{}'
 
-# Eliminar la tarea con id 1
+# Delete the task with id 1
 curl -X DELETE http://127.0.0.1:5000/tasks/1
 ```

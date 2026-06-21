@@ -1,2 +1,2 @@
-# Presencia de este archivo en la raíz hace que pytest agregue el directorio
-# del proyecto a sys.path, permitiendo "from app import app" desde tests/.
+# The presence of this file at the root makes pytest add the project
+# directory to sys.path, allowing "from app import app" from tests/.

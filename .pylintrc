@@ -1,26 +1,26 @@
-# Configuración de Pylint para la API de Tareas.
+# Pylint configuration for the Tasks API.
 
 [MAIN]
 ignore = .venv
 
 [MESSAGES CONTROL]
-# unused-argument: los manejadores de @app.errorhandler reciben 'error'
-#   aunque no lo usen (parte del contrato de Flask).
-# too-few-public-methods: la API usa funciones-vista, no clases.
-# global-statement: 'tasks' es estado en memoria compartido a propósito.
+# unused-argument: @app.errorhandler handlers receive 'error'
+#   even if they do not use it (part of Flask's contract).
+# too-few-public-methods: the API uses view functions, not classes.
+# global-statement: 'tasks' is in-memory shared state on purpose.
 disable =
     unused-argument,
     too-few-public-methods,
     global-statement
 
 [FORMAT]
-# Longitud de línea alineada con Black (88 columnas).
+# Line length aligned with Black (88 columns).
 max-line-length = 88
 
 [BASIC]
-# Permite nombres cortos idiomáticos para variables locales.
+# Allows short idiomatic names for local variables.
 good-names = id, t, fn, db
 
 [DESIGN]
-# Fuerza vistas concisas limitando las variables locales.
+# Forces concise views by limiting local variables.
 max-locals = 10

@@ -1,7 +1,7 @@
-"""Suite de pruebas (pytest) para la API de Tareas.
+"""Test suite (pytest) for the Tasks API.
 
-Verifica los endpoints GET, POST y DELETE de /tasks con el cliente de
-pruebas de Flask, sin necesidad de levantar el servidor.
+Verifies the GET, POST, and DELETE endpoints of /tasks using Flask's
+test client, without needing to start the server.
 """
 
 import pytest
@@ -11,21 +11,21 @@ from app import app
 
 @pytest.fixture
 def client():
-    """Cliente de pruebas de Flask en modo testing."""
+    """Flask test client in testing mode."""
     app.config["TESTING"] = True
     with app.test_client() as test_client:
         yield test_client
 
 
 def test_list_tasks_returns_200(client):
-    """Listar tareas responde 200 y una lista JSON."""
+    """Listing tasks responds 200 and a JSON list."""
     response = client.get("/tasks")
     assert response.status_code == 200
     assert isinstance(response.get_json(), list)
 
 
 def test_create_task_success_returns_201(client):
-    """Crear una tarea con datos válidos responde 201."""
+    """Creating a task with valid data responds 201."""
     response = client.post("/tasks", json={"title": "Test the API"})
     assert response.status_code == 201
     body = response.get_json()
@@ -34,13 +34,13 @@ def test_create_task_success_returns_201(client):
 
 
 def test_create_task_without_title_returns_400(client):
-    """Crear una tarea sin título responde 400."""
+    """Creating a task without a title responds 400."""
     response = client.post("/tasks", json={})
     assert response.status_code == 400
 
 
 def test_delete_existing_task_returns_200(client):
-    """Eliminar una tarea existente responde 200."""
+    """Deleting an existing task responds 200."""
     created = client.post("/tasks", json={"title": "Task to delete"})
     created_id = created.get_json()["id"]
     response = client.delete(f"/tasks/{created_id}")
@@ -48,13 +48,13 @@ def test_delete_existing_task_returns_200(client):
 
 
 def test_delete_missing_task_returns_404(client):
-    """Eliminar una tarea inexistente responde 404."""
+    """Deleting a non-existent task responds 404."""
     response = client.delete("/tasks/999999")
     assert response.status_code == 404
 
 
 def test_unknown_route_returns_404(client):
-    """Una ruta no registrada activa el manejador global 404."""
+    """An unregistered route triggers the global 404 handler."""
     response = client.get("/route-that-does-not-exist")
     assert response.status_code == 404
     assert "error" in response.get_json()
