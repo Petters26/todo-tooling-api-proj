@@ -6,7 +6,6 @@ global error handlers (400/404/500) responding in JSON.
 
 from flask import Flask, jsonify, request, abort
 
-
 app = Flask(__name__)
 
 
@@ -41,8 +40,7 @@ def resource_not_found(error):
             {
                 "error": "Resource not found",
                 "message": (
-                    "The requested URL or resource was not found on "
-                    "this server."
+                    "The requested URL or resource was not found on " "this server."
                 ),
             }
         ),
@@ -101,5 +99,5 @@ def delete_task(task_id):
     return jsonify({"message": f"Task {task_id} deleted"}), 200
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True, port=5000)
