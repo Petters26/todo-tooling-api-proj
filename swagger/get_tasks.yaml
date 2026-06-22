@@ -1,0 +1,19 @@
+Get all tasks
+List out all tasks stored in the system.
+responses:
+  200:
+    description: A list of tasks.
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          title:
+            type: string
+            example: "Learn Flask"
+          completed:
+            type: boolean
+            example: false
