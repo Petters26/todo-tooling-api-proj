@@ -5,13 +5,13 @@ The focus of the project is mastering professional Python *tooling*:
 virtual environments, package management, linters, formatters, and version
 control with Git.
 
+Additionally, it features professional interactive documentation adhering to the OpenAPI specification.
+
 ## Team members
 
-- Name 1
-- Name 2
-- Name 3
-
-> ⚠️ Replace the names above with the actual team members.
+- Pedro Rivero
+- Jendrick Montiel
+- Segundo Alvarado
 
 ## Installation and running
 
@@ -36,9 +36,16 @@ pip install -r requirements.txt
 
 # Run server (port 5000)
 python app.py
-```
 
 The server listens on **http://127.0.0.1:5000**.
+
+## Interactive API Documentation (Swagger)
+
+The project includes an interactive Swagger UI generated via **Flasgger**. This layer reads isolated OpenAPI specification contracts inside the `/swagger` directory, keeping the codebase modular and clean.
+
+Once the local server is running, you can access the full interactive documentation, test endpoints in real-time, and check data schemas at:
+
+**[http://127.0.0.1:5000/apidocs/](http://127.0.0.1:5000/apidocs/)**
 
 ## Tooling commands
 
@@ -53,7 +60,6 @@ black --check app.py
 
 # Quality linter — must score >= 8.0/10
 pylint app.py
-```
 
 > The Flake8 configuration lives in `setup.cfg` (line length aligned with
 > Black at 88 columns) and the Pylint one in `.pylintrc` (custom team
@@ -64,31 +70,29 @@ pylint app.py
 ```bash
 # Run the test suite from the project root
 pytest -v
-```
 
 ## Endpoints
 
-| Method | Path             | Description            | Successful response |
-|--------|------------------|------------------------|---------------------|
-| GET    | `/tasks`         | List all tasks         | `200` + JSON list |
-| POST   | `/tasks`         | Create a new task      | `201` + created task |
-| DELETE | `/tasks/<id>`    | Delete a task          | `200` (or `404` if not found) |
+| Method | Path              | Description            | Successful response | Documentation |
+|--------|------------------|------------------------|---------------------|---------------|
+| GET    | `/tasks`          | List all tasks         | `200` + JSON list   | [Swagger UI](/apidocs/) |
+| POST   | `/tasks`          | Create a new task      | `201` + created task| [Swagger UI](/apidocs/) |
+| DELETE | `/tasks/<id>`    | Delete a task          | `200` (or `404`)    | [Swagger UI](/apidocs/) |
 
 ### Usage examples
 
 ```bash
 # List tasks
-curl http://127.0.0.1:5000/tasks
+curl [http://127.0.0.1:5000/tasks](http://127.0.0.1:5000/tasks)
 
 # Create a task (valid JSON)
-curl -X POST http://127.0.0.1:5000/tasks \
+curl -X POST [http://127.0.0.1:5000/tasks](http://127.0.0.1:5000/tasks) \
      -H "Content-Type: application/json" \
      -d '{"title": "Learn Flask"}'
 
 # Create without title -> 400
-curl -X POST http://127.0.0.1:5000/tasks \
+curl -X POST [http://127.0.0.1:5000/tasks](http://127.0.0.1:5000/tasks) \
      -H "Content-Type: application/json" -d '{}'
 
 # Delete the task with id 1
-curl -X DELETE http://127.0.0.1:5000/tasks/1
-```
+curl -X DELETE [http://127.0.0.1:5000/tasks/1](http://127.0.0.1:5000/tasks/1)
