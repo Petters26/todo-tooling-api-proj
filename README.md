@@ -36,6 +36,7 @@ pip install -r requirements.txt
 
 # Run server (port 5000)
 python app.py
+```
 
 The server listens on **http://127.0.0.1:5000**.
 
@@ -60,6 +61,7 @@ black --check app.py
 
 # Quality linter — must score >= 8.0/10
 pylint app.py
+```
 
 > The Flake8 configuration lives in `setup.cfg` (line length aligned with
 > Black at 88 columns) and the Pylint one in `.pylintrc` (custom team
@@ -70,6 +72,7 @@ pylint app.py
 ```bash
 # Run the test suite from the project root
 pytest -v
+```
 
 ## Endpoints
 
@@ -83,16 +86,17 @@ pytest -v
 
 ```bash
 # List tasks
-curl [http://127.0.0.1:5000/tasks](http://127.0.0.1:5000/tasks)
+curl http://127.0.0.1:5000/tasks
 
 # Create a task (valid JSON)
-curl -X POST [http://127.0.0.1:5000/tasks](http://127.0.0.1:5000/tasks) \
+curl -X POST http://127.0.0.1:5000/tasks \
      -H "Content-Type: application/json" \
      -d '{"title": "Learn Flask"}'
 
 # Create without title -> 400
-curl -X POST [http://127.0.0.1:5000/tasks](http://127.0.0.1:5000/tasks) \
+curl -X POST http://127.0.0.1:5000/tasks \
      -H "Content-Type: application/json" -d '{}'
 
 # Delete the task with id 1
-curl -X DELETE [http://127.0.0.1:5000/tasks/1](http://127.0.0.1:5000/tasks/1)
+curl -X DELETE http://127.0.0.1:5000/tasks/1
+```
