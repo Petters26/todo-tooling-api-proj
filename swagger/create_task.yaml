@@ -1,31 +1,31 @@
-Create a new task
-Add a new task to the list by providing a JSON body with a title.
+summary: "Create a new task"
+description: "Add a new task to the list by providing a JSON body with a title."
 parameters:
-  - name: body
-    in: body
+  - name: "body"
+    in: "body"
     required: true
     schema:
-      type: object
+      type: "object"
       required:
-        - title
+        - "title"
       properties:
         title:
-          type: string
+          type: "string"
           example: "Master Swagger Documentation"
 responses:
   201:
-    description: Task created successfully.
+    description: "Task created successfully."
     schema:
-      type: object
+      type: "object"
       properties:
         id:
-          type: integer
+          type: "integer"
           example: 3
         title:
-          type: string
+          type: "string"
           example: "Master Swagger Documentation"
         completed:
-          type: boolean
+          type: "boolean"
           example: false
   400:
-    description: Invalid input or missing required fields.
+    description: "Invalid input or missing required fields."

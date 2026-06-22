@@ -1,19 +1,19 @@
-Get all tasks
-List out all tasks stored in the system.
+summary: "Get all tasks"
+description: "List out all tasks stored in the system."
 responses:
   200:
-    description: A list of tasks.
+    description: "A list of tasks."
     schema:
-      type: array
+      type: "array"
       items:
-        type: object
+        type: "object"
         properties:
           id:
-            type: integer
+            type: "integer"
             example: 1
           title:
-            type: string
+            type: "string"
             example: "Learn Flask"
           completed:
-            type: boolean
+            type: "boolean"
             example: false
