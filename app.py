@@ -5,9 +5,23 @@ global error handlers (400/404/500) responding in JSON.
 """
 
 from flask import Flask, jsonify, request, abort
+from flasgger import Swagger, swag_from
 
 app = Flask(__name__)
 
+app.config["SWAGGER"] = {
+    "title": "To Do Management API",
+    "uiversion": 3,
+    "info": {
+        "title": "To Do Management API",
+        "version": "1.0.0",
+        "description": "Interactive API documentation built with Flask and Flasgger.",
+        "contact": {
+            "name": "Team: Pedro Rivero, Jendrick Montiel, Segundo Alvarado",
+        },
+    },
+}
+swagger = Swagger(app)
 
 tasks = [
     {"id": 1, "title": "Learn Flask", "completed": False},
@@ -66,12 +80,14 @@ def internal_server_error(error):
 
 
 @app.route("/tasks", methods=["GET"])
+@swag_from("swagger/get_tasks.yaml")
 def get_tasks():
     """Return the complete list of tasks with code 200."""
     return jsonify(tasks), 200
 
 
 @app.route("/tasks", methods=["POST"])
+@swag_from("swagger/create_task.yaml")
 def create_task():
     """Create a task from received JSON and return it with 201.
     If the 'title' field is missing or JSON is invalid, responds with 400.
@@ -90,6 +106,7 @@ def create_task():
 
 
 @app.route("/tasks/<int:task_id>", methods=["DELETE"])
+@swag_from("swagger/delete_task.yaml")
 def delete_task(task_id):
     """Delete the task with the given ID (200) or responds 404 if not found."""
     task = next((t for t in tasks if t["id"] == task_id), None)
